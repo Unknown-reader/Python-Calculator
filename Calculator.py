@@ -74,7 +74,6 @@ def math_pressed(math):
         current = ""
 
     elif mathsign != str() and defxworking == False and percentt == False:
-        print(2)
         if mathsign == '+':
             firstnum = round(float(firstnum + secondnum),6)
         if mathsign == '-':
@@ -183,16 +182,13 @@ def result():
     if mathsign != str() and defxworking == True and percentt == False:
         if mathsign == '+':
             firstnum = round(firstnum + secondnum ** int(power),6)
-            defxworking = False
         if mathsign == '-':
             firstnum = round(firstnum - secondnum ** int(power),6)
-            defxworking = False
         if mathsign == '*':
             firstnum = round(firstnum * (secondnum ** int(power)),6)
-            defxworking = False
         if mathsign == '/':
             firstnum = round(firstnum / (secondnum ** int(power)),6)
-            defxworking = False
+        defxworking = False
         screen.set(is_int(firstnum))
 
 
@@ -206,13 +202,13 @@ def result():
             screen.set(is_int(firstnum))
             percentt = False
 
-    mathsign = str()
-    current = ""
-    power = ""
-
     if defxworking == False and mathsign == '*' or '/' and percentt == True:
         clear()
 
+    mathsign = str()
+    current = ""
+    power = ""
+        
 def clear():
     global current, firstnum, secondnum, mathsign, power, defxworking, percentt
 
