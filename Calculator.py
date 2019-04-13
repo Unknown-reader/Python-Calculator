@@ -11,22 +11,24 @@ screen.set("0")
 current = ""
 power = ""
 
-firstnum = str()
-secondnum = str()
-mathsign = str()
+firstnum = ""
+secondnum = ""
+mathsign = ""
 
 defxworking = False
 percentt = False
 
+
 def math_button_pressed():
     if mathsign == '+':
         button_plus.config(relief=SUNKEN)
-    if mathsign == '-':
+    elif mathsign == '-':
         button_minus.config(relief=SUNKEN)
-    if mathsign == '*':
+    elif mathsign == '*':
         button_multiply.config(relief=SUNKEN)
-    if mathsign == '/':
+    elif mathsign == '/':
         button_division.config(relief=SUNKEN)
+
 
 def math_button_raised():
     button_plus.config(relief=RAISED)
@@ -34,193 +36,191 @@ def math_button_raised():
     button_multiply.config(relief=RAISED)
     button_division.config(relief=RAISED)
 
+
 def is_int(num):
     if int(num) == float(num):
         return int(num)
     else:
         return float(num)
 
+
 def number_pressed(butt):
     global current, power, firstnum, secondnum
 
-    if mathsign == str() and defxworking == False:
+    if mathsign == "" and not defxworking:
         current = current + str(butt)
-        screen.set(current)
         firstnum = float(current)
 
-    elif mathsign != str() and defxworking == False:
+    elif mathsign != "" and not defxworking:
         math_button_raised()
         current = current + str(butt)
-        screen.set(current)
         secondnum = float(current)
 
-    elif mathsign == str() and defxworking == True:
+    elif mathsign == "" and defxworking:
         power = power + str(butt)
         current = current + str(butt)
-        screen.set(current)
 
-    elif mathsign != str and defxworking == True:
+    elif mathsign != "" and defxworking:
         power = power + str(butt)
         current = current + str(butt)
-        screen.set(current)
         print(power)
+    screen.set(current)
 
 def math_pressed(math):
     global current, power, mathsign, firstnum, secondnum, defxworking, percentt
 
-    if mathsign == str() and defxworking == False and percentt == False and firstnum != str():
+    if mathsign == "" and not defxworking and not percentt and firstnum != "":
         mathsign = str(math)
         math_button_pressed()
         current = ""
 
-    elif mathsign != str() and defxworking == False and percentt == False:
+    elif mathsign != "" and not defxworking and not percentt:
         if mathsign == '+':
-            firstnum = round(float(firstnum + secondnum),6)
-        if mathsign == '-':
-            firstnum = round(float(firstnum - secondnum),6)
-        if mathsign == '*':
-            firstnum = round(float(firstnum * secondnum),6)
-        if mathsign == '/':
-            firstnum = round(float(firstnum / secondnum),6)
+            firstnum = float(firstnum + secondnum)
+        elif mathsign == '-':
+            firstnum = float(firstnum - secondnum)
+        elif mathsign == '*':
+            firstnum = float(firstnum * secondnum)
+        elif mathsign == '/':
+            firstnum = float(firstnum / secondnum)
+        firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
 
-        mathsign = str(math)
-        math_button_pressed()
-        current = ""
-
-    elif mathsign != str() and defxworking == True and percentt == False:
+    elif mathsign != "" and defxworking and not percentt:
         if mathsign == '+':
-            firstnum = round(firstnum + secondnum ** int(power),6)
-        if mathsign == '-':
-            firstnum = round(firstnum - secondnum ** int(power),6)
-        if mathsign == '*':
-            firstnum = round(firstnum * (secondnum ** int(power)),6)
-        if mathsign == '/':
-            firstnum = round(firstnum / (secondnum ** int(power)),6)
+            firstnum = firstnum + secondnum ** int(power)
+        elif mathsign == '-':
+            firstnum = firstnum - secondnum ** int(power)
+        elif mathsign == '*':
+            firstnum = firstnum * secondnum ** int(power)
+        elif mathsign == '/':
+            firstnum = firstnum / secondnum ** int(power)
+        firstnum = round(firstnum, 6)
         defxworking = False
         screen.set(is_int(firstnum))
         defxworking = False
-        mathsign = str(math)
-        math_button_pressed()
         power = ""
-        current = ""
 
-    elif defxworking and percentt == False:
+    elif defxworking and not percentt:
         firstnum = round(firstnum ** int(power), 6)
         defxworking = False
         screen.set(is_int(firstnum))
-        mathsign = str(math)
-        math_button_pressed()
         power = ""
-        current = ""
+
 
     elif percentt:
         if mathsign == '+':
-            firstnum = round(float(firstnum + firstnum/100*secondnum),6)
-        if mathsign == '-':
-            firstnum = round(float(firstnum - firstnum/100*secondnum),6)
+            firstnum = float(firstnum + firstnum / 100 * secondnum)
+        elif mathsign == '-':
+            firstnum = float(firstnum - firstnum / 100 * secondnum)
+        firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
         percentt = False
-        mathsign = str(math)
-        math_button_pressed()
-        current = ""
+    mathsign = str(math)
+    math_button_pressed()
+    current = ""
+
 
 def squareroot():
     global firstnum, secondnum, mathsign, current
 
-    if mathsign == str():
-        firstnum = round(sqrt(firstnum),6)
+    if mathsign == "":
+        firstnum = round(sqrt(firstnum), 6)
         screen.set(is_int(firstnum))
 
-    if mathsign != str():
+    elif mathsign != "":
         if mathsign == '+':
-            firstnum = round(sqrt(firstnum + float(secondnum)),6)
-        if mathsign == '-':
-            firstnum = round(sqrt(firstnum - float(secondnum)),6)
-        if mathsign == '*':
-            firstnum = round(sqrt(firstnum * float(secondnum)),6)
-        if mathsign == '/':
-            firstnum = round(sqrt(firstnum / float(secondnum)),6)
-
+            firstnum = sqrt(firstnum + float(secondnum))
+        elif mathsign == '-':
+            firstnum = sqrt(firstnum - float(secondnum))
+        elif mathsign == '*':
+            firstnum = sqrt(firstnum * float(secondnum))
+        elif mathsign == '/':
+            firstnum = sqrt(firstnum / float(secondnum))
+        firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
-        secondnum = str()
-        mathsign = str()
+        secondnum = ""
+        mathsign = ""
         current = ""
+
 
 def x():
     global firstnum, secondnum, mathsign, current, defxworking
 
-    if mathsign == str():
+    if mathsign == "":
         current = str(is_int(firstnum)) + '^'
         screen.set(current)
         defxworking = True
 
-    elif mathsign != str():
+    elif mathsign != "":
 
         current = str(is_int(secondnum)) + '^'
         screen.set(current)
         defxworking = True
 
+
 def result():
     global firstnum, secondnum, mathsign, current, power, defxworking, percentt
-    if defxworking == False and percentt == False:
+    if not defxworking and not percentt:
         if mathsign == '+':
-            firstnum = round(float(firstnum + secondnum),6)
-        if mathsign == '-':
-            firstnum = round(float(firstnum - secondnum),6)
-        if mathsign == '*':
-            firstnum = round(float(firstnum * secondnum),6)
-        if mathsign == '/':
-            firstnum = round(float(firstnum / secondnum),6)
+            firstnum = float(firstnum + secondnum)
+        elif mathsign == '-':
+            firstnum = float(firstnum - secondnum)
+        elif mathsign == '*':
+            firstnum = float(firstnum * secondnum)
+        elif mathsign == '/':
+            firstnum = float(firstnum / secondnum)
+        firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
 
-    if mathsign == str() and defxworking == True and percentt == False:
-        firstnum = round(firstnum ** int(power),6)
+    elif mathsign == "" and defxworking and not percentt:
+        firstnum = round(firstnum ** int(power), 6)
         defxworking = False
         screen.set(is_int(firstnum))
 
-    if mathsign != str() and defxworking == True and percentt == False:
+    elif mathsign != "" and defxworking and not percentt:
         if mathsign == '+':
-            firstnum = round(firstnum + secondnum ** int(power),6)
-        if mathsign == '-':
-            firstnum = round(firstnum - secondnum ** int(power),6)
-        if mathsign == '*':
-            firstnum = round(firstnum * (secondnum ** int(power)),6)
-        if mathsign == '/':
-            firstnum = round(firstnum / (secondnum ** int(power)),6)
+            firstnum = firstnum + secondnum ** int(power)
+        elif mathsign == '-':
+            firstnum = firstnum - secondnum ** int(power)
+        elif mathsign == '*':
+            firstnum = firstnum * secondnum ** int(power)
+        elif mathsign == '/':
+            firstnum = firstnum / secondnum ** int(power)
+        firstnum = round(firstnum, 6)
         defxworking = False
         screen.set(is_int(firstnum))
 
-
-    if defxworking == False and percentt == True:
+    elif not defxworking and percentt:
         if mathsign == '+':
-            firstnum = round(float(firstnum + firstnum/100*secondnum),6)
-            screen.set(is_int(firstnum))
-            percentt = False
-        if mathsign == '-':
-            firstnum = round(float(firstnum - firstnum/100*secondnum),6)
-            screen.set(is_int(firstnum))
-            percentt = False
+            firstnum = float(firstnum + firstnum / 100 * secondnum)
+        elif mathsign == '-':
+            firstnum = float(firstnum - firstnum / 100 * secondnum)
+        firstnum = round(firstnum, 6)
+        screen.set(is_int(firstnum))
+        percentt = False
 
-    if defxworking == False and mathsign == '*' or '/' and percentt == True:
+    elif not defxworking and mathsign == '*' or '/' and percentt:
         clear()
 
-    mathsign = str()
+    mathsign = ""
     current = ""
     power = ""
-        
+
+
 def clear():
     global current, firstnum, secondnum, mathsign, power, defxworking, percentt
 
     screen.set(0)
     current = ""
     power = ""
-    firstnum = str()
-    secondnum = str()
-    mathsign = str()
+    firstnum = ""
+    secondnum = ""
+    mathsign = ""
     defxworking = False
     math_button_raised()
     percentt = False
+
 
 def percent():
     global firstnum, secondnum, current, percentt
@@ -230,10 +230,9 @@ def percent():
     percentt = True
 
 
-
 # Widgets
 
-calculation = Entry(root, textvariable = screen, font=("Verdana", 15, ), bd = 12,
+calculation = Entry(root, textvariable=screen, font=("Verdana", 15,), bd=12,
                     insertwidth=4, width=14, justify=RIGHT)
 calculation.grid(columnspan=4)
 #   Numbers
@@ -275,28 +274,28 @@ button_float.grid(row=5, column=1)
 button_plus = Button(root, text='+', command=lambda: math_pressed('+'), bg="gray70",
                      bd=3, padx=11, pady=5, font=("Helvetica", 14, "bold"))
 button_plus.grid(row=2, column=3, sticky=W)
-button_minus = Button(root, text='-', command=lambda: math_pressed('-'),  bg="gray70",
+button_minus = Button(root, text='-', command=lambda: math_pressed('-'), bg="gray70",
                       bd=3, padx=11, pady=4, font=("Verdana", 14, "bold"))
 button_minus.grid(row=3, column=3, sticky=W)
 button_multiply = Button(root, text='*', command=lambda: math_pressed('*'), bg="gray70",
                          bd=3, padx=13, pady=5, font=("Helvetica", 14, "bold"))
 button_multiply.grid(row=4, column=3, )
-button_division = Button(root, text='/', command=lambda: math_pressed('/'),  bg="gray70",
+button_division = Button(root, text='/', command=lambda: math_pressed('/'), bg="gray70",
                          bd=3, padx=14, pady=5, font=("Helvetica", 14, "bold"))
 button_division.grid(row=5, column=3, )
 button_equal = Button(root, text='=', command=lambda: result(), bg='orange',
                       bd=3, padx=12, pady=5, font=("Arial", 14))
 button_equal.grid(row=5, column=2, )
 
-button_percent = Button(root, text='%', command=lambda: percent(),  bg="gray70",
-                         bd=3, padx=8, pady=5, font=("Helvetica", 14, "bold"))
+button_percent = Button(root, text='%', command=lambda: percent(), bg="gray70",
+                        bd=3, padx=8, pady=5, font=("Helvetica", 14, "bold"))
 button_percent.grid(row=1, column=3, )
 
 button_clear = Button(root, text='C', command=lambda: clear(), bg='gray70',
                       bd=3, padx=11, pady=5, font=("Helvetica", 14))
 button_clear.grid(row=1, column=0)
 button_sqrt = Button(root, text='√', command=lambda: squareroot(), bg="gray70",
-                        bd=3, padx=12, pady=5, font=("Helvetica", 14, "bold"))
+                     bd=3, padx=12, pady=5, font=("Helvetica", 14, "bold"))
 button_sqrt.grid(row=1, column=1, sticky=W)
 button_x = Button(root, text='x^y', command=lambda: x(), bg="gray70",
                   bd=3, padx=6, pady=5, font=("Helvetica", 14))
