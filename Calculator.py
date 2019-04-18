@@ -15,8 +15,8 @@ firstnum = ""
 secondnum = ""
 mathsign = ""
 
-defxworking = False
-percentt = False
+exponentiation = False
+percent_active = False
 
 
 def math_button_pressed():
@@ -47,34 +47,34 @@ def is_int(num):
 def number_pressed(butt):
     global current, power, firstnum, secondnum
 
-    if mathsign == "" and not defxworking:
+    if mathsign == "" and not exponentiation:
         current = current + str(butt)
         firstnum = float(current)
 
-    elif mathsign != "" and not defxworking:
+    elif mathsign != "" and not exponentiation:
         math_button_raised()
         current = current + str(butt)
         secondnum = float(current)
 
-    elif mathsign == "" and defxworking:
+    elif mathsign == "" and exponentiation:
         power = power + str(butt)
         current = current + str(butt)
 
-    elif mathsign != "" and defxworking:
+    elif mathsign != "" and exponentiation:
         power = power + str(butt)
         current = current + str(butt)
         print(power)
     screen.set(current)
 
 def math_pressed(math):
-    global current, power, mathsign, firstnum, secondnum, defxworking, percentt
+    global current, power, mathsign, firstnum, secondnum, exponentiation, percent_active
 
-    if mathsign == "" and not defxworking and not percentt and firstnum != "":
+    if mathsign == "" and not exponentiation and not percent_active and firstnum != "":
         mathsign = str(math)
         math_button_pressed()
         current = ""
 
-    elif mathsign != "" and not defxworking and not percentt:
+    elif mathsign != "" and not exponentiation and not percent_active:
         if mathsign == '+':
             firstnum = float(firstnum + secondnum)
         elif mathsign == '-':
@@ -86,7 +86,7 @@ def math_pressed(math):
         firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
 
-    elif mathsign != "" and defxworking and not percentt:
+    elif mathsign != "" and exponentiation and not percent_active:
         if mathsign == '+':
             firstnum = firstnum + secondnum ** int(power)
         elif mathsign == '-':
@@ -96,26 +96,26 @@ def math_pressed(math):
         elif mathsign == '/':
             firstnum = firstnum / secondnum ** int(power)
         firstnum = round(firstnum, 6)
-        defxworking = False
+        exponentiation = False
         screen.set(is_int(firstnum))
-        defxworking = False
+        exponentiation = False
         power = ""
 
-    elif defxworking and not percentt:
+    elif exponentiation and not percent_active:
         firstnum = round(firstnum ** int(power), 6)
-        defxworking = False
+        exponentiation = False
         screen.set(is_int(firstnum))
         power = ""
 
 
-    elif percentt:
+    elif percent_active:
         if mathsign == '+':
             firstnum = float(firstnum + firstnum / 100 * secondnum)
         elif mathsign == '-':
             firstnum = float(firstnum - firstnum / 100 * secondnum)
         firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
-        percentt = False
+        percent_active = False
     mathsign = str(math)
     math_button_pressed()
     current = ""
@@ -145,23 +145,23 @@ def squareroot():
 
 
 def x():
-    global firstnum, secondnum, mathsign, current, defxworking
+    global firstnum, secondnum, mathsign, current, exponentiation
 
     if mathsign == "":
         current = str(is_int(firstnum)) + '^'
         screen.set(current)
-        defxworking = True
+        exponentiation = True
 
     elif mathsign != "":
 
         current = str(is_int(secondnum)) + '^'
         screen.set(current)
-        defxworking = True
+        exponentiation = True
 
 
 def result():
-    global firstnum, secondnum, mathsign, current, power, defxworking, percentt
-    if not defxworking and not percentt:
+    global firstnum, secondnum, mathsign, current, power, exponentiation, percent_active
+    if not exponentiation and not percent_active:
         if mathsign == '+':
             firstnum = float(firstnum + secondnum)
         elif mathsign == '-':
@@ -173,12 +173,12 @@ def result():
         firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
 
-    elif mathsign == "" and defxworking and not percentt:
+    elif mathsign == "" and exponentiation and not percent_active:
         firstnum = round(firstnum ** int(power), 6)
-        defxworking = False
+        exponentiation = False
         screen.set(is_int(firstnum))
 
-    elif mathsign != "" and defxworking and not percentt:
+    elif mathsign != "" and exponentiation and not percent_active:
         if mathsign == '+':
             firstnum = firstnum + secondnum ** int(power)
         elif mathsign == '-':
@@ -188,19 +188,19 @@ def result():
         elif mathsign == '/':
             firstnum = firstnum / secondnum ** int(power)
         firstnum = round(firstnum, 6)
-        defxworking = False
+        exponentiation = False
         screen.set(is_int(firstnum))
 
-    elif not defxworking and percentt:
+    elif not exponentiation and percent_active:
         if mathsign == '+':
             firstnum = float(firstnum + firstnum / 100 * secondnum)
         elif mathsign == '-':
             firstnum = float(firstnum - firstnum / 100 * secondnum)
         firstnum = round(firstnum, 6)
         screen.set(is_int(firstnum))
-        percentt = False
+        percent_active = False
 
-    elif not defxworking and mathsign == '*' or '/' and percentt:
+    elif not exponentiation and mathsign == '*' or '/' and percent_active:
         clear()
 
     mathsign = ""
@@ -209,7 +209,7 @@ def result():
 
 
 def clear():
-    global current, firstnum, secondnum, mathsign, power, defxworking, percentt
+    global current, firstnum, secondnum, mathsign, power, exponentiation, percent_active
 
     screen.set(0)
     current = ""
@@ -217,17 +217,17 @@ def clear():
     firstnum = ""
     secondnum = ""
     mathsign = ""
-    defxworking = False
+    exponentiation = False
     math_button_raised()
-    percentt = False
+    percent_active = False
 
 
 def percent():
-    global firstnum, secondnum, current, percentt
+    global firstnum, secondnum, current, percent_active
 
     current = str(is_int(secondnum)) + '%'
     screen.set(current)
-    percentt = True
+    percent_active = True
 
 
 # Widgets
